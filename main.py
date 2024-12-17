@@ -1,11 +1,13 @@
 import datetime
 import os
 import time
+import pyperclip
 
 print("Írja be a PGP titkosított üzenetet a PGPMESSAGE.txt fájlba!\nMajd nyomjon ENTERT")
 input()
 
 def convert():
+    clipboard = pyperclip.paste()
     date = datetime.datetime.now()
     try:
         dirName = f"{date.year}_{date.month}_{date.day}"
