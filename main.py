@@ -10,23 +10,36 @@ def convert():
     clipboard = pyperclip.paste()
     date = datetime.datetime.now()
     try:
-        dirName = f"{date.year}_{date.month}_{date.day}"
-        os.mkdir(f"{dirName}")
-        file = open("PGPMESSAGE.txt", "r")
-        fileName = f"{date.year}{date.month}{date.day}_{date.hour}_{date.minute}_{date.second}.asc"
-        sv = open(f"{fileName}", "w")
-        sv.write(file.read())
-        sv.close()
-        os.system(f"move {fileName} {dirName}")
-        print(f"{fileName} fájl létrehozva!")
+        with open("PGPMESSAGE.txt", "r") as file:
+            content = file.read()
+        if content == "":
+            return "NODATA"
+        else:
+            dirName = f"{date.year}_{date.month}_{date.day}"
+            os.mkdir(f"{dirName}")
+            fileName = f"{date.year}{date.month}{date.day}_{date.hour}_{date.minute}_{date.second}.asc"
+            sv = open(f"{fileName}", "w")
+            sv.write(content)
+            sv.close()
+            print(f"{fileName} fájl létrehozva!")
+            os.system(f"move {fileName} {dirName}")
+
     except FileExistsError:
-        file = open("PGPMESSAGE.txt", "r")
-        fileName = f"{date.year}{date.month}{date.day}_{date.hour}_{date.minute}_{date.second}.asc"
-        sv = open(f"{fileName}", "w")
-        sv.write(file.read())
-        sv.close()
-        print(f"{fileName} fájl létrehozva!")
-        os.system(f"move {fileName} {dirName}")
+        with open("PGPMESSAGE.txt", "r") as file:
+            content = file.read()
+        if content == "":
+            return "NODATA"
+        else:
+            fileName = f"{date.year}{date.month}{date.day}_{date.hour}_{date.minute}_{date.second}.asc"
+            sv = open(f"{fileName}", "w")
+            sv.write(content)
+            sv.close()
+            print(f"{fileName} fájl létrehozva!")
+            os.system(f"move {fileName} {dirName}")
 
-convert()
+def start():
+    result = convert()
+    if result == "NODATA":
+        print("Nincs egy karakter sem a PGPMESSAGE.txt fájlban!")
 
+start()
